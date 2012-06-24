@@ -1,0 +1,30 @@
+{
+    "name": "ZendExperts/ZeTheme",
+    "type": "library",
+    "description": "ZeTheme is a Zend Framework 2 module that allows you to switch between various themes. The module does not contain any themes, but you can create your own.",
+    "keywords": ["module", "zf2", "view", "templating"],
+    "homepage": "https://github.com/ZendExperts/ZeTheme",
+    "license": "New BSD",
+    "authors": [
+        {
+            "name": "Cosmin Harangus",
+            "homepage": "http://www.zendexperts.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+    },
+	"autoload": {
+        "psr-0": {
+            "ZeTheme": "src/"
+        },
+		"classmap":[
+            "./"
+        ]
+    },
+	"extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
