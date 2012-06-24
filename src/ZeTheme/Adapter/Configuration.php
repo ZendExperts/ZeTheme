@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 namespace ZeTheme\Adapter;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * ZeTheme adapter that returns the name of the theme specified in the configuration file
