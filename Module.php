@@ -53,7 +53,7 @@ class Module
      * Get Service Configuration
      * @return array
      */
-    public function getServiceConfiguration()
+    public function getServiceConfig()
     {
         return array(
             'factories' => array(
