@@ -12,7 +12,7 @@ the theme from the session, a database field or any other place you saved it to.
 ZeTheme can be installed using Composer by simply adding the following lines to your composer.json file:
 
     "require": {
-        "ZendExperts/ZeTheme": "1.0.*"
+        "zendexperts/ze-theme": "dev-master"
     }
     
 Then run `php composer.phar update` and add `ZeTheme` in the `application.config.php` file under `modules`.

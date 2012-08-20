@@ -1,5 +1,5 @@
 {
-    "name": "ZendExperts/ZeTheme",
+    "name": "zendexperts/ze-theme",
     "type": "library",
     "description": "ZeTheme is a Zend Framework 2 module that allows you to switch between various themes. The module does not contain any themes, but you can create your own.",
     "keywords": ["module", "zf2", "view", "templating"],
