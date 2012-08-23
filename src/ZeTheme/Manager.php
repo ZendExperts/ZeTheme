@@ -96,13 +96,13 @@ class Manager
 
         if (isset($config['template_path_stack'])){
             $pathResolver = new \Zend\View\Resolver\TemplatePathStack(
-                $config['template_path_stack']
+                array('script_paths'=>$config['template_path_stack'])
             );
             $defaultPathStack = $this->serviceManager->get('ViewTemplatePathStack');
             $pathResolver->setDefaultSuffix($defaultPathStack->getDefaultSuffix());
             $themeResolver->attach($pathResolver);
         }
-
+        
         $viewResolver->attach($themeResolver, 100);
         return true;
     }
