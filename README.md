@@ -34,6 +34,26 @@ that should be search for various themes and the adapters used for selecting the
     
 To get a basic theme up and running you can just copy the `default` one from `examples/theme` folder into the `themes` folder or create a 
 new one by following the tutorial bellow. Make sure that the `default_theme` option is set the the name of your new theme.
+
+ZeTheme uses adapters to get the theme that should be rendered. By default the `ZeTheme\Adapter\Configuration` class is used to get the default theme 
+specified in the configuration file. There is also a `Session` adapter that retrieves the theme from the `$_SESSION['ZeTheme']` and a `Route` adapter
+that allows you to specify a different theme for each route by simply changing the your configuration to somethine similar to this:
+
+    'ze_theme' => array(
+        'default_theme' => 'default',
+        'theme_paths' => array(
+            __DIR__ . '/../themes/'
+        ),
+        'routes'=>array(
+            'back'=>array('home', 'blog')
+        ),
+        'adapters' => array(
+            'ZeTheme\Adapter\Configuration',
+            'ZeTheme\Adapter\Route',
+        ),
+    ),
+    
+In this case the `back` theme will be used whenever the `home` or `blog` routes are matched. In all other cases the application will use the `default` theme.
      
 In order to create a new theme you just need to create a folder with the name of the new theme in one of the directories 
 specified by the `theme_paths` array that should contain a `config.php` file that should return a configuration array with 
