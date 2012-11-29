@@ -9,6 +9,7 @@
  */
 namespace ZeTheme;
 use Zend\Mvc\MvcEvent;
+use Zend\ModuleManager\ModuleManager;
 
 /**
  * ZeTheme module class
@@ -17,7 +18,13 @@ use Zend\Mvc\MvcEvent;
  */
 class Module
 {
-    public function onBootstrap(MvcEvent $event)
+
+    public function init(ModuleManager $manager)
+    {
+        $manager->getEventManager()->getSharedManager()->attach('Zend\Mvc\Application', 'bootstrap', array($this, 'bootstrap'), 10001);
+    }
+
+    public function bootstrap(MvcEvent $event)
     {
         // Set the static service manager instance so we can use it everywhere in the module
         $serviceManager = $event->getApplication()->getServiceManager();

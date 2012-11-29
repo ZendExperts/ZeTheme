@@ -88,6 +88,8 @@ class Manager
         $viewResolver = $this->serviceManager->get('ViewResolver');
         $themeResolver = new \Zend\View\Resolver\AggregateResolver();
         if (isset($config['template_map'])){
+            $viewResolverMap = $this->serviceManager->get('ViewTemplateMapResolver');
+            $viewResolverMap->add($config['template_map']);
             $mapResolver = new \Zend\View\Resolver\TemplateMapResolver(
                 $config['template_map']
             );
@@ -95,6 +97,8 @@ class Manager
         }
 
         if (isset($config['template_path_stack'])){
+            $viewResolverPathStack = $this->serviceManager->get('ViewTemplatePathStack');
+            $viewResolverPathStack->addPaths($config['template_path_stack']);
             $pathResolver = new \Zend\View\Resolver\TemplatePathStack(
                 array('script_paths'=>$config['template_path_stack'])
             );
