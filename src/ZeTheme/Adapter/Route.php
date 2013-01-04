@@ -23,6 +23,9 @@ class Route extends AbstractAdapter
         $app = $this->serviceLocator->get('Application');
         $request = $app->getRequest();
         $router = $this->serviceLocator->get('Router');
+        if(!$router->match($request)){
+            return null;
+        }
         $matchedRoute = $router->match($request)->getMatchedRouteName();
         if (!isset($config['ze_theme']['routes']) || !is_array($config['ze_theme']['routes'])){
             return null;
