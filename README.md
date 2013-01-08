@@ -1,4 +1,4 @@
-ZeTwig
+ZeTheme
 ====
 ZeTheme is a Zend Framework 2 module that allows you to switch between various themes.
 It allows developers to create various themes for a website and then switch between them at will.
