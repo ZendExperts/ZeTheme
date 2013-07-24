@@ -152,7 +152,7 @@ class Manager
             $path = $path_iterator->extract();
             $appConfig = $this->serviceManager->get('Configuration');  
             
-            if($appConfig['ze_theme']['custom_theme_path']){
+            if($appConfig['ze_theme']['custom_theme_path'] === true){
             	$configFile = str_replace('{theme}', $theme, $path) . '/config.php';
 			}
             else $configFile = $path . $theme . '/config.php';
