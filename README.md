@@ -59,7 +59,7 @@ In order to create a new theme you just need to create a folder with the name of
 specified by the `theme_paths` array that should contain a `config.php` file that should return a configuration array with 
 the paths to the views defined in the new theme.
 
-If u have more complex theme setup you can use dinamic theme path like so:
+If you have more complex theme setup you can use dinamic theme path like so:
 
     'ze_theme' => array(
         'default_theme' => 'default',
