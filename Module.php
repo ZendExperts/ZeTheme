@@ -2,7 +2,7 @@
 /**
  * This file is part of ZeTheme
  *
- * (c) 2012 ZendExperts <team@zendexperts.com>
+ * (c) 2013 ZendExperts <team@zendexperts.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,12 +19,7 @@ use Zend\ModuleManager\ModuleManager;
 class Module
 {
 
-    public function init(ModuleManager $manager)
-    {
-        $manager->getEventManager()->getSharedManager()->attach('Zend\Mvc\Application', 'bootstrap', array($this, 'bootstrap'), 10001);
-    }
-
-    public function bootstrap(MvcEvent $event)
+    public function onBootstrap(MvcEvent $event)
     {
         // Set the static service manager instance so we can use it everywhere in the module
         $serviceManager = $event->getApplication()->getServiceManager();
