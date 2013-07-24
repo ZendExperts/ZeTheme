@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of ZeTheme
  *
@@ -147,10 +148,19 @@ class Manager
         $config = null;
         $n = $path_iterator->count();
         while (!$config && $n-->0) {
+        	
             $path = $path_iterator->extract();
-            if (file_exists($path . $theme . '/config.php')){
-                $config = include ($path . $theme . '/config.php');
+            $appConfig = $this->serviceManager->get('Configuration');  
+            
+            if($appConfig['ze_theme']['custom_theme_path'] === true){
+            	$configFile = str_replace('{theme}', $theme, $path) . '/config.php';
+			}
+            else $configFile = $path . $theme . '/config.php';
+
+            if (file_exists($configFile)){
+                $config = include ($configFile);
             }
+            
         }
 
         return $config;
