@@ -123,8 +123,12 @@ class Manager
 		}
 
 		if($viewResolver instanceof AggregateResolver) $viewResolver->attach($themeResolver, 100);
-		elseif($viewResolver instanceof TemplateMapResolver) $viewResolver->merge($themeResolver->getIterator()->top());
-		
+		elseif($viewResolver instanceof TemplateMapResolver){
+			foreach($themeResolver->getIterator() as $resolver){
+				$viewResolver->merge($resolver);
+			}
+		}
+
 		return true;
 
 	}
