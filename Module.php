@@ -19,48 +19,50 @@ use Zend\ModuleManager\ModuleManager;
 class Module
 {
 
-    public function onBootstrap(MvcEvent $event)
-    {
-        // Set the static service manager instance so we can use it everywhere in the module
-        $serviceManager = $event->getApplication()->getServiceManager();
-        $themeManager = $serviceManager->get('ZeThemeManager');
-        $themeManager->init();
-    }
+	public function onBootstrap(MvcEvent $event)
+	{
+		// Set the static service manager instance so we can use it everywhere in the module
+		$serviceManager = $event->getApplication()->getServiceManager();
+		$themeManager = $serviceManager->get('ZeThemeManager');
+		$themeManager->init();
 
-    /**
-     * Get core configuration array
-     * @return array
-     */
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
+	}
 
-    /**
-     * Get Autoloader Config
-     * @return array
-     */
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
-    }
+	/**
+	 * Get core configuration array
+	 * @return array
+	 */
+	public function getConfig()
+	{
+		return include __DIR__ . '/config/module.config.php';
+	}
 
-    /**
-     * Get Service Configuration
-     * @return array
-     */
-    public function getServiceConfig()
-    {
-        return array(
-            'factories' => array(
-                'ZeThemeManager' => 'ZeTheme\Service\ManagerFactory'
-            )
-        );
-    }
+	/**
+	 * Get Autoloader Config
+	 * @return array
+	 */
+	public function getAutoloaderConfig()
+	{
+		return array(
+			'Zend\Loader\StandardAutoloader' => array(
+				'namespaces' => array(
+					__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+				),
+			),
+		);
+	}
+
+	/**
+	 * Get Service Configuration
+	 * @return array
+	 */
+	public function getServiceConfig()
+	{
+		return array(
+			'factories' => array(
+				'ZeThemeManager' => 'ZeTheme\Service\ManagerFactory'
+			)
+		);
+	}
+
 }
