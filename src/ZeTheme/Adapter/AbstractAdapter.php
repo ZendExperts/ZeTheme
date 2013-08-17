@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of ZeTheme
  *
@@ -17,23 +18,63 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 abstract class AbstractAdapter implements AdapterInterface
 {
-    protected $serviceLocator;
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function __construct(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
+	protected $serviceLocator;
+	protected $themePath;
+	protected $subTheme = null;
 
-    /**
-     * Persist the name of the theme in the adapter if possible
-     * @param string $theme
-     * @return bool
-     */
-    public function setTheme($theme)
-    {
-        return false;
-    }
+	/**
+	 * @param ServiceLocatorInterface $serviceLocator
+	 */
+	public function __construct(ServiceLocatorInterface $serviceLocator)
+	{
+		$this->serviceLocator = $serviceLocator;
+	}
+
+	/**
+	 * Persist the name of the theme in the adapter if possible
+	 * @param string $theme
+	 * @return bool
+	 */
+	public function setTheme($theme)
+	{
+		return false;
+	}
+
+	/**
+	* Set the theme path
+	*
+	* @param mixed $themePath
+	*/
+	public function setThemePath($themePath)
+	{
+		$this->themePath = $themePath;
+	}
+
+	/**
+	* Return theme path
+	*
+	*/
+	public function getThemePath()
+	{
+		return $this->themePath;
+	}
+
+	/**
+	* Returns the subfolder name if split_theme if used
+	*
+	*/
+	public function getSubTheme()
+	{
+		return $this->subTheme;
+	}
+
+	/**
+	* Sets the subfolder name if split_theme if used
+	*
+	*/
+	public function setSubTheme($subTheme)
+	{
+		$this->subTheme = $subTheme;
+	}
 
 }

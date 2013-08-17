@@ -17,25 +17,48 @@ namespace ZeTheme\Adapter;
 class Route extends AbstractAdapter
 {
 
-    public function getTheme()
-    {
-        $config = $this->serviceLocator->get('Configuration');
-        $app = $this->serviceLocator->get('Application');
-        $request = $app->getRequest();
-        $router = $this->serviceLocator->get('Router');
-        if(!$router->match($request)){
-            return null;
-        }
-        $matchedRoute = $router->match($request)->getMatchedRouteName();
-        if (!isset($config['ze_theme']['routes']) || !is_array($config['ze_theme']['routes'])){
-            return null;
-        }
-        foreach($config['ze_theme']['routes'] as $key=>$routes){
-            if (in_array($matchedRoute, $routes)){
-                return $key;
-            }
-        }
-        return null;
-    }
+	public function getTheme()
+	{
+
+		$config = $this->serviceLocator->get('Configuration');
+		$app = $this->serviceLocator->get('Application');
+		$request = $app->getRequest();
+		$router = $this->serviceLocator->get('Router');
+
+		if (!$router->match($request)) return null;
+
+		if (!isset($config['ze_theme']['routes']) || !is_array($config['ze_theme']['routes'])){
+			return null;
+		}
+
+		$matchedRoute = $router->match($request)->getMatchedRouteName();
+
+		if($config['ze_theme']['split_theme'] === true){
+
+			list($topRoute, $childRoutes) = explode('/', $matchedRoute, 2);
+			foreach($config['ze_theme']['routes'] as $theme => $pair){
+				foreach($pair as $subTheme => $routes){
+					if (!is_array($routes)) $routes = array($routes);
+					foreach($routes as $route){
+						if ($route == $topRoute){
+							$this->setSubTheme($subTheme);
+							return $theme;
+						}
+					}
+				}
+			}
+
+		}
+		else{
+
+			foreach($config['ze_theme']['routes'] as $key => $routes){
+				if (in_array($matchedRoute, $routes)) return $key;
+			}
+
+		}
+
+		return null;
+
+	}
 
 }

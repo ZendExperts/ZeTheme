@@ -86,3 +86,33 @@ Bellow is an example of such a file:
         ),
     );
 
+
+There is a new feature named `split theme`. Atm this is available only for `Route` adapter.
+This new feature allows you to create a theme with 2 subthemes which are basicly frontend and backend themes
+under a top level theme.
+This is how it works.
+
+	return array(
+		'ze_theme' => array(
+			'default_theme' => 'default',
+			'split_theme' => true,
+			'theme_paths' => array(
+				__DIR__ . '/themes/'
+			),
+
+			// ATTENTION: this is a priority queue LIFO order; order matters
+			'adapters' => array(
+				'ZeTheme\Adapter\Configuration',
+				'ZeTheme\Adapter\Route',
+			),
+
+			'routes' => array(
+				'default' => array(
+					'backend' => array(
+						'admin',
+						'zfcadmin'
+					)
+				)
+			),
+		),
+	)
