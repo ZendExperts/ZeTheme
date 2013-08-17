@@ -20,6 +20,7 @@ abstract class AbstractAdapter implements AdapterInterface
 {
 	protected $serviceLocator;
 	protected $themePath;
+	protected $subTheme = null;
 
 	/**
 	 * @param ServiceLocatorInterface $serviceLocator
@@ -56,6 +57,24 @@ abstract class AbstractAdapter implements AdapterInterface
 	public function getThemePath()
 	{
 		return $this->themePath;
+	}
+
+	/**
+	* Returns the subfolder name if split_theme if used
+	*
+	*/
+	public function getSubTheme()
+	{
+		return $this->subTheme;
+	}
+
+	/**
+	* Sets the subfolder name if split_theme if used
+	*
+	*/
+	public function setSubTheme($subTheme)
+	{
+		$this->subTheme = $subTheme;
 	}
 
 }

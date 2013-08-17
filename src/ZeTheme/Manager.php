@@ -10,7 +10,9 @@
  */
 namespace ZeTheme;
 use Zend\Stdlib\PriorityQueue,
-	Zend\ServiceManager\ServiceLocatorInterface;
+	Zend\ServiceManager\ServiceLocatorInterface,
+	Zend\View\Resolver\AggregateResolver,
+	Zend\View\Resolver\TemplateMapResolver;
 
 /**
  * ZeTheme manager
@@ -23,18 +25,28 @@ class Manager
 	 * @var null|\Zend\Stdlib\PriorityQueue
 	 */
 	protected $themePaths = null;
+
 	/**
 	 * @var null|string
 	 */
 	protected $currentTheme = null;
+
+	/**
+	 * Used for split_themes = true
+	 * @var null|string
+	 */
+	protected $currentSubTheme = null;
+
 	/**
 	 * @var null|\ZeTheme\Adapter\AdapterInterface
 	 */
 	protected $lastMatchedAdapter = null;
+
 	/**
 	 * @var null|\Zend\Stdlib\PriorityQueue
 	 */
 	protected $adapters = null;
+
 	/**
 	 * @var \Zend\ServiceManager\ServiceLocatorInterface
 	 */
@@ -69,19 +81,20 @@ class Manager
 	 */
 	public function init()
 	{
-		//if already initialized then return
+		// if already initialized then return
 		if ($this->currentTheme){
 			return true;
 		}
 
-		//find the current theme that should be used
+		// find the current theme that should be used
 		$theme = $this->selectCurrentTheme();
 		if (!$theme){
 			return false;
 		}
 
-		//get theme configuration
+		// get theme configuration
 		$config = $this->getThemeConfig($theme);
+
 		if (!$config){
 			return false;
 		}
@@ -109,8 +122,11 @@ class Manager
 			$themeResolver->attach($pathResolver);
 		}
 
-		$viewResolver->attach($themeResolver, 100);
+		if($viewResolver instanceof AggregateResolver) $viewResolver->attach($themeResolver, 100);
+		elseif($viewResolver instanceof TemplateMapResolver) $viewResolver->merge($themeResolver);
+
 		return true;
+
 	}
 
 	/**
@@ -133,6 +149,21 @@ class Manager
 			return false;
 		}
 
+		$appConfig = $this->serviceManager->get('Configuration');
+
+		if($appConfig['ze_theme']['split_theme'] === true){
+
+			if(empty($appConfig['ze_theme']['split_theme_folders']))
+				throw new \Exception(
+					"The `split_theme_folders` array can't be empty!".
+				    " Please specify the folders in order to function properly !"
+				);
+
+			if(!in_array($appConfig['ze_theme']['split_theme_default'], $appConfig['ze_theme']['split_theme_folders']))
+				throw new \Exception("The `split_theme_default` can't be found in `split_theme_folders` array!");
+
+		}
+
 		$theme = $this->cleanThemeName($theme);
 		return $this->lastMatchedAdapter->setTheme($theme);
 	}
@@ -144,18 +175,23 @@ class Manager
 	 */
 	public function getThemeConfig($theme)
 	{
+
 		$theme = $this->cleanThemeName($theme);
-		$path_iterator = $this->themePaths->getIterator();
+		$pathIterator = $this->themePaths->getIterator();
 		$config = null;
-		$n = $path_iterator->count();
+		$n = $pathIterator->count();
 		while (!$config && $n-->0) {
 
-			$path = $path_iterator->extract();
+			$path = $pathIterator->extract();
 			$appConfig = $this->serviceManager->get('Configuration');
 			$themeConfigPath = $path . $theme;
 
 			if($appConfig['ze_theme']['custom_theme_path'] === true){
 				$themeConfigPath = str_replace('{theme}', $theme, $path);
+			}
+
+			if($appConfig['ze_theme']['split_theme'] === true){
+				$themeConfigPath .= '/' . $this->currentSubTheme;
 			}
 
 			$configFile = $themeConfigPath . '/config.php';
@@ -169,6 +205,7 @@ class Manager
 		}
 
 		return $config;
+
 	}
 
 	/**
@@ -198,21 +235,27 @@ class Manager
 	 */
 	protected function selectCurrentTheme()
 	{
+
+		$appConfig = $this->serviceManager->get('Configuration');
 		$iterator = $this->adapters;
-		$theme = null;
-		$adapter = null;
+		$adapter = $subTheme = $theme = null;
 		$n = $iterator->count();
 		while (!$theme && $n-->0) {
 			$adapter = $iterator->extract();
 			$theme = $adapter->getTheme();
+			$subTheme = $adapter->getSubTheme();
 		}
 
-		if (!$theme) {
-			return null;
+		if (!$theme) return null;
+		if ($appConfig['ze_theme']['split_theme'] === true && !$subTheme){
+			$subTheme = $appConfig['ze_theme']['split_theme_default'];
 		}
+
 		$this->lastMatchedAdapter = $adapter;
 		$this->currentTheme = $theme;
+		$this->currentSubTheme = $subTheme;
 		return $theme;
+
 	}
 
 }
