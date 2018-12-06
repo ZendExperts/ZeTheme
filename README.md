@@ -33,7 +33,7 @@ that should be search for various themes and the adapters used for selecting the
     ),
     
 To get a basic theme up and running you can just copy the `default` one from `examples/theme` folder into the `themes` folder or create a 
-new one by following the tutorial bellow. Make sure that the `default_theme` option is set the the name of your new theme.
+new one by following the tutorial bellow. Make sure that the `default_theme` option is set to the name of your new theme.
 
 ZeTheme uses adapters to get the theme that should be rendered. By default the `ZeTheme\Adapter\Configuration` class is used to get the default theme 
 specified in the configuration file. There is also a `Session` adapter that retrieves the theme from the `$_SESSION['ZeTheme']` and a `Route` adapter
