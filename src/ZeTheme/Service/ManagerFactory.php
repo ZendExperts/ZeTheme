@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 namespace ZeTheme\Service;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
     ZeTheme\Manager;
@@ -30,5 +31,10 @@ class ManagerFactory implements FactoryInterface
         $config = $serviceLocator->get('Configuration');
         $manager = new Manager($serviceLocator, $config['ze_theme']);
         return $manager;
+    }
+
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        return $this->createService($container);
     }
 }
